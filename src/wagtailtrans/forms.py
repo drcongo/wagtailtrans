@@ -4,6 +4,7 @@ from operator import itemgetter
 
 from django import forms
 from django.conf import settings
+from django.db import models
 from django.utils.translation import ugettext as _
 from wagtail.wagtailcore.models import Page
 
@@ -55,10 +56,20 @@ class LanguageForm(forms.ModelForm):
         return self.cleaned_data['is_default']
 
 
-class TranslationForm(forms.Form):
+class DummyModel(models.Model):
+
+    class Meta:
+        managed = False
+
+
+class TranslationForm(forms.ModelForm):
     copy_from_canonical = forms.BooleanField(required=False)
     parent_page = forms.ModelChoiceField(
         queryset=TranslatablePage.objects.none())
+
+    class Meta:
+        model = DummyModel
+        fields = []
 
     def __init__(self, *args, **kwargs):
         self.page = kwargs.pop('page')
