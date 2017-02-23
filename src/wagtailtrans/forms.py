@@ -56,6 +56,11 @@ class LanguageForm(forms.ModelForm):
 
 
 class TranslationForm(forms.Form):
+
+    class _meta(object):
+        exclude = []
+        fields = []
+
     copy_from_canonical = forms.BooleanField(required=False)
     parent_page = forms.ModelChoiceField(
         queryset=TranslatablePage.objects.none())
